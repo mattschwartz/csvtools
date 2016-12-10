@@ -1,8 +1,15 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.0.2",
   "name": "CsvToolsCore",
+  "title": "CsvToolsCore",
+  "authors": ["Matt Schwartz"],
+  "tags": ["csv", "dotnet", "core"],
+  "description": "Simple CSV parsing tools for dotnet core.",
   "dependencies": {
     "NETStandard.Library": "1.6.0"
+  },
+  "packOptions": {
+    "projectUrl": "https://github.com/mattschwartz/csvtools"
   },
   "frameworks": {
     "netstandard1.6": {
@@ -12,5 +19,6 @@
   "configurations": {
     "Latest": {},
     "TEST": {}
-  }
+  },
+  "supports": {}
 }
