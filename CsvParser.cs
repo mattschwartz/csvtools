@@ -19,13 +19,13 @@ namespace CsvTools
         public static CsvTable ParseTable(byte[] data, bool normalizeHeaderNames = true)
         {
             _delimeter = DefaultDelimeter;
-            return new CsvParser().InternalParse(data, normalizeHeaderNames, DefaultDelimeter);
+            return new CsvParser().InternalParse(data, normalizeHeaderNames, _delimeter);
         }
 
         public static CsvTable ParseTable(byte[] data, bool normalizeHeaderNames = true, string delimeter = DefaultDelimeter)
         {
             _delimeter = delimeter;
-            return new CsvParser().InternalParse(data, normalizeHeaderNames, delimeter);
+            return new CsvParser().InternalParse(data, normalizeHeaderNames, _delimeter);
         }
 
         private CsvTable InternalParse(byte[] data, bool normalizeHeaderNames, string delimeter)
