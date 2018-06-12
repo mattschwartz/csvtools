@@ -9,6 +9,8 @@ namespace CsvTools
     {
         private CsvTable _table;
         private StreamReader _reader;
+        private static string _delimeter;
+        private const string DefaultDelimeter = ",";
 
         private CsvParser()
         {
@@ -16,21 +18,31 @@ namespace CsvTools
 
         public static CsvTable ParseTable(byte[] data, bool normalizeHeaderNames = true)
         {
-            return new CsvParser().InternalParse(data, normalizeHeaderNames);
+            _delimeter = DefaultDelimeter;
+            return new CsvParser().InternalParse(data, normalizeHeaderNames, DefaultDelimeter);
         }
 
-        private CsvTable InternalParse(byte[] data, bool normalizeHeaderNames)
+        public static CsvTable ParseTable(byte[] data, bool normalizeHeaderNames = true, string delimeter = DefaultDelimeter)
         {
+            _delimeter = delimeter;
+            return new CsvParser().InternalParse(data, normalizeHeaderNames, delimeter);
+        }
+
+        private CsvTable InternalParse(byte[] data, bool normalizeHeaderNames, string delimeter)
+        {
+            _delimeter = delimeter;
             _table = new CsvTable();
             _reader = new StreamReader(new MemoryStream(data));
             string[] row = null;
 
             ReadHeaders(normalizeHeaderNames);
 
-            for (;;) {
+            for (; ; )
+            {
                 row = GetLineValues();
 
-                if (row == null) {
+                if (row == null)
+                {
                     break;
                 }
 
@@ -45,9 +57,11 @@ namespace CsvTools
             string[] line = GetLineValues();
 
             int hIndex = 0;
-            foreach (var name in line) {
+            foreach (var name in line)
+            {
                 string columnName = name;
-                if (normalizeHeaderNames) {
+                if (normalizeHeaderNames)
+                {
                     columnName = new string(name.ToLower()
                         .Where(c => char.IsLetterOrDigit(c)).ToArray());
                 }
@@ -61,11 +75,12 @@ namespace CsvTools
             string[] result;
             string line = _reader.ReadLine();
 
-            if (line == null) {
+            if (line == null)
+            {
                 return null;
             }
 
-            result = Regex.Split(line, @",(?=(?:[^""]*""[^""]*"")*(?![^""]*""))");
+            result = Regex.Split(line, $@"{_delimeter}(?=(?:[^""]*""[^""]*"")*(?![^""]*""))");
 
             return result;
         }
